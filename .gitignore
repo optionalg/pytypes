@@ -1,4 +1,5 @@
 .idea
 .tox
+*.egg-info
 *.pyc
 *.swp
