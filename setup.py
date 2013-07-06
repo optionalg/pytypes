@@ -3,7 +3,11 @@ from setuptools import setup
 
 
 def read(filename):
-    return open(filename, 'r').read()
+    try:
+        return open(filename, 'r').read()
+    except OSError:
+        return ''
+
 
 requirements = ['funcparserlib']
 
