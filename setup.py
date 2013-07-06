@@ -9,4 +9,11 @@ setup(
     license='Apache License 2.0',
     author='Andrey Vlasovskikh',
     author_email='andrey.vlasovskikh@gmail.com',
-    description='Type annotations for Python')
+    description='Type annotations for Python',
+    classifiers=[
+        'Development Status :: 3 - Alpha',
+        'License :: OSI Approved :: Apache Software License',
+        'Programming Language :: Python :: 2.7',
+        'Programming Language :: Python :: 3.3',
+        'Topic :: Software Development :: Documentation',
+    ])
