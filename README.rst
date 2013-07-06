@@ -1,11 +1,27 @@
 Python type annotations
 =======================
 
-[![Build Status](https://drone.io/github.com/JetBrains/pytypes/status.png)](https://drone.io/github.com/JetBrains/pytypes/latest)
+.. image:: https://drone.io/github.com/JetBrains/pytypes/status.png
+   :alt: Build Status
+   :target: https://drone.io/github.com/JetBrains/pytypes/latest
+
+
+**Note**: This is an alpha version.
+
+Goals
+-----
 
 TODO
 
-Problems:
+
+Supported syntax
+----------------
+
+TODO
+
+
+Problems
+--------
 
 * How to annotate unicode/bytes values for both Python 2 and 3?
 * Is 'str or int' a subtype of 'int'?
