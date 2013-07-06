@@ -1,5 +1,5 @@
-PyTypes - Python type annotations
-=================================
+Python type annotations
+=======================
 
 TODO
 
