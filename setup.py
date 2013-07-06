@@ -5,12 +5,14 @@ from setuptools import setup
 def read(filename):
     return open(filename, 'r').read()
 
+requirements=['funcparserlib']
 
 setup(
     name='pytypes',
     version='0.1',
     packages=['pytypes', 'pytypes.test'],
-    requires=['funcparserlib'],
+    requires=requirements,
+    install_requires=requirements,
     url='https://github.com/JetBrains/pytypes',
     license='Apache License 2.0',
     author='Andrey Vlasovskikh',
