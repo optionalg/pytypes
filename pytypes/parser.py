@@ -21,16 +21,16 @@
 from __future__ import unicode_literals
 from functools import wraps
 from funcparserlib.lexer import make_tokenizer
-from funcparserlib.parser import finished, many, some, skip
-from pytypes.ast import ClassType
+from funcparserlib.parser import finished, many, some, skip, forward_decl
+from pytypes.ast import ClassType, ParameterizedType
 
 
 __all__ = ['parse']
 
 token_specs = [
     ('space', (r'[ \t\r\n]+',)),
+    ('op', (r'[\.,\(\)\[\]]|(of)',)),
     ('identifier', (r'[A-Za-z_][A-Za-z_0-9]*',)),
-    ('op', (r'\.',)),
 ]
 
 
@@ -69,10 +69,37 @@ def make_class_type(id, ids):
     return ClassType('.'.join([id] + ids))
 
 
+@star_args
+def make_param_type(type, param):
+    params = param if isinstance(param, list) else [param]
+    return ParameterizedType(type, params)
+
+
+@star_args
+def make_param_list(head, tail):
+    return [head] + tail
+
+
 identifier = tok('identifier')
 class_type = identifier + many(op('.') + identifier) >> make_class_type
-type_expr = class_type
+type_expr = forward_decl()
+simple_expr = class_type
+paren_param_list = (
+    op('(') + type_expr + many(op(',') + type_expr) + op(')')
+    >> make_param_list)
+bracket_param_list = (
+    op('[') + type_expr + many(op(',') + type_expr) + op(']')
+    >> make_param_list)
+of_param_list = op('of') + (paren_param_list | type_expr)
+param_type = (
+    simple_expr + (of_param_list | bracket_param_list)
+    >> make_param_type)
+type_expr.define(param_type | class_type)
 type_file = type_expr + skip(finished)
+
+for k, v in globals().items():
+    if hasattr(v, 'named'):
+        v.named(k)
 
 
 def tokenize(s):
