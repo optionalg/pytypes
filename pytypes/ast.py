@@ -27,12 +27,28 @@ class Type(object):
     pass
 
 
-class ClassType(Type, namedtuple('ClassType', 'name')):
+class ClassType(Type):
     """Simple class type.
 
     :type name: unicode
+    :type range: TextRange or None
     """
-    pass
+
+    def __init__(self, name, range=None):
+        self.name = name
+        self.range = range
+
+    def __eq__(self, other):
+        return (isinstance(other, ClassType) and
+                self.name == other.name and
+                (self.range is None or other.range is None or
+                 self.range == other.range))
+
+    def __hash__(self):
+        return hash(self.name)
+
+    def __repr__(self):
+        return 'ClassType({!r}, {!r})'.format(self.name, self.range)
 
 
 class ParameterizedType(Type, namedtuple('ParameterizedType',
@@ -92,5 +108,25 @@ class NullableType(Type, namedtuple('NullableType', 'type')):
     Redundant: can be expressed as UnionType([type, LiteralType("None")]).
 
     :type type: Type
+    """
+    pass
+
+
+class TextPosition(namedtuple('TextPosition', 'line column')):
+    """Position in text.
+
+    Lines and columns are 1-based.
+
+    :type line: int
+    :type column: int
+    """
+    pass
+
+
+class TextRange(namedtuple('TextRange', 'start end')):
+    """Text range.
+
+    :type start: TextPosition
+    :type end: TextRange
     """
     pass

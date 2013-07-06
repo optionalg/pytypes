@@ -20,9 +20,9 @@
 
 from __future__ import unicode_literals
 from functools import wraps
-from funcparserlib.lexer import make_tokenizer
+from funcparserlib.lexer import make_tokenizer, Token
 from funcparserlib.parser import finished, many, some, skip, forward_decl
-from pytypes.ast import ClassType, ParameterizedType
+from pytypes.ast import ClassType, ParameterizedType, TextRange, TextPosition
 
 
 __all__ = ['parse']
@@ -40,8 +40,7 @@ def tok(type, name=None):
     :type type: unicode
     :type name: unicode or None
     """
-    return (some(lambda t: t.type == type and (name is None or t.name == name))
-            >> (lambda t: t.value))
+    return some(lambda t: t.type == type and (name is None or t.name == name))
 
 
 def op(name):
@@ -59,14 +58,22 @@ def star_args(f):
     return wrapper
 
 
+def make_range(start, end):
+    line1, col1 = start
+    line2, col2 = end
+    return TextRange(TextPosition(line1, col1), TextPosition(line2, col2))
+
+
 @star_args
-def make_class_type(id, ids):
+def make_class_type(head, tail):
     """Create a ClassType from parse results.
 
-    :type id: unicode
-    :type ids: list of unicode
+    :type head: Token
+    :type tail: list of Token
     """
-    return ClassType('.'.join([id] + ids))
+    tokens = [head] + tail
+    return ClassType('.'.join([t.value for t in tokens]),
+                     make_range(tokens[0].start, tokens[-1].end))
 
 
 @star_args
