@@ -5,7 +5,7 @@ from setuptools import setup
 def read(filename):
     try:
         return open(filename, 'r').read()
-    except OSError:
+    except IOError:
         return ''
 
 
