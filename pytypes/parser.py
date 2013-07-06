@@ -97,9 +97,14 @@ param_type = (
 type_expr.define(param_type | class_type)
 type_file = type_expr + skip(finished)
 
-for k, v in globals().items():
-    if hasattr(v, 'named'):
-        v.named(k)
+
+def name_parser_vars(vars):
+    for k, v in vars.items():
+        if hasattr(v, 'named'):
+            v.named(k)
+
+
+name_parser_vars(globals())
 
 
 def tokenize(s):
