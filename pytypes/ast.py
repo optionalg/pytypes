@@ -14,13 +14,12 @@
 # License for the specific language governing permissions and limitations under
 # the License.
 
-"""Python type annotations.
 
-TODO
-"""
+"""Abstract syntax tree of Python types."""
+
 
 from __future__ import unicode_literals
-from collections import Sequence
+from collections import Sequence, namedtuple
 
 
 class Type(object):
@@ -28,43 +27,37 @@ class Type(object):
     pass
 
 
-class ClassType(Type):
+class ClassType(Type, namedtuple('ClassType', 'name')):
     """Simple class type.
 
-    :type name: str or unicode
+    :type name: unicode
     """
-
-    def __init__(self, name):
-        self.name = name
+    pass
 
 
-class ParameterizedType(Type):
+class ParameterizedType(Type, namedtuple('ParameterizedType',
+                                         'type parameters')):
     """Type with parameters.
 
     :type type: Type
     :type parameters: Sequence of Type
     """
-
-    def __init__(self, type, parameters):
-        self.type = type
-        self.parameters = parameters
+    pass
 
 
-class TypeParameter(Type):
+class TypeParameter(Type, namedtuple('TypeParameter', 'name bound')):
     """Polymorphic type parameter.
 
     The upper bound may be None.
 
-    :type name: str or unicode
+    :type name: unicode
     :type bound: Type
     """
-
-    def __init__(self, name, bound):
-        self.name = name
-        self.bound = bound
+    pass
 
 
-class CallableType(Type):
+class CallableType(Type, namedtuple('CallableType',
+                                    'arguments star_args kwargs result')):
     """Callable type.
 
     :type arguments: Sequence of Type
@@ -72,43 +65,32 @@ class CallableType(Type):
     :type kwargs: Type
     :type result: Type
     """
-
-    def __init__(self, arguments, star_args, kwargs, result):
-        self.arguments = arguments
-        self.star_args = star_args
-        self.kwargs = kwargs
-        self.result = result
+    pass
 
 
-class UnionType(Type):
+class UnionType(Type, namedtuple('UnionType', 'types')):
     """Union of types.
 
     :type types: Sequence of Type
     """
-
-    def __init__(self, types):
-        self.types = types
+    pass
 
 
-class LiteralType(Type):
+class LiteralType(Type, namedtuple('LiteralType', 'value')):
     """Literal instance type.
 
     Allowed literals: None, booleans, integers, floats, bytes, unicode.
 
-    :type value: str or unicode
+    :type value: unicode
     """
-
-    def __init__(self, value):
-        self.value = value
+    pass
 
 
-class NullableType(Type):
+class NullableType(Type, namedtuple('NullableType', 'type')):
     """Type or None.
 
     Redundant: can be expressed as UnionType([type, LiteralType("None")]).
 
     :type type: Type
     """
-
-    def __init__(self, type):
-        self.type = type
+    pass
