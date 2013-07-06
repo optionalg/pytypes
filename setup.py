@@ -9,7 +9,7 @@ def read(filename):
 setup(
     name='pytypes',
     version='0.1',
-    packages=['pytypes', 'test'],
+    packages=['pytypes', 'pytypes.test'],
     requires=['funcparserlib'],
     url='https://github.com/JetBrains/pytypes',
     license='Apache License 2.0',
