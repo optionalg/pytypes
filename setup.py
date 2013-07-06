@@ -3,7 +3,7 @@ from setuptools import setup
 
 
 def read(filename):
-    return open(filename, 'rb').read()
+    return open(filename, 'r').read()
 
 
 setup(
