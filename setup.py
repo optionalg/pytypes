@@ -5,7 +5,7 @@ from setuptools import setup
 def read(filename):
     return open(filename, 'r').read()
 
-requirements=['funcparserlib']
+requirements = ['funcparserlib']
 
 setup(
     name='pytypes',
